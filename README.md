@@ -1,4 +1,4 @@
-# OSA Maven Configuration module
+# OSA Maven Root module
 
 ## What's OSA?
 
