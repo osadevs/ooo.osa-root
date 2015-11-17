@@ -49,7 +49,11 @@
 	
 	<url>http://www.osadev.org/</url>
 	
-	
+	<organization>
+		<name>Université Nice Sophia Antipolis</name>
+		<url>http://www.unice.fr/</url>
+	</organization>
+		
 	<properties>
 		<!-- Javadoc location properties -->
 		<fractal.url>http://fractal.ow2.org/current/doc/javadoc/fractal/</fractal.url>
@@ -67,16 +71,23 @@
 		<scm.dev.url>scm:git:git@github.com:${scm.url}</scm.dev.url>
 		
 		<!-- OSA has its own deployement server with maven repo and web site -->
-		<devrepo.id>osadev.deployment</devrepo.id>
-		<devrepo.name>OSA Dev Repository</devrepo.name>
-		<devrepo.url.up>http://mvn.osadev.org:8081/content/repositories</devrepo.url.up>
+		<dev.repo.id>osadev.deployment</dev.repo.id>
+		<dev.repo.name>OSA Dev Repository</dev.repo.name>
+		<dev.repo.url.up>http://mvn.osadev.org:8081/content/repositories</dev.repo.url.up>
+		
+		<!-- OSA has its own plugin maven repo. Artifacts are manually uploaded. -->
+		<plugin.repo.id>plugin.deployment</plugin.repo.id>
+		<plugin.repo.name>OSA Plugin Repository</plugin.repo.name>
+		<plugin.repo.url.down>http://mvn.osadev.org:8081/content/repositories/plugins</plugin.repo.url.down>
 		
 		<!-- Starting OSA v0.7 the whole web-site is versioned, except the web-site
 			root. -->
 		<!-- The web-site root is handled as a separate dependency with id f.i.o.wwwroot. -->
 		<website.id>osawebsite</website.id>
-		<website.url.up>dav:http://osa.inria.fr/osa_website/0.7/</website.url.up>
-		<website.rooturl>http://osa.inria.fr/</website.rooturl>
+		<website.url.up>scp://osa.inria.fr/var/osa_website/0.8/</website.url.up>
+		<website.rooturl>http://www.osadev.org/0.8/</website.rooturl>
+		
+		<version.base>0.8</version.base>
 	</properties>
   	
 	<scm>
@@ -98,12 +109,12 @@
 		<repository>
      		<id>osadev.releases</id>
      		<name>Internal Releases</name>
-     		<url>${devrepo.url.up}/osadev-releases</url>
+     		<url>${dev.repo.url.up}/osadev-releases</url>
   		</repository>
   		<snapshotRepository>
      		<id>osadev.snapshots</id>
      		<name>Internal Releases</name>
-     		<url>${devrepo.url.up}/osadev-snapshots</url>
+     		<url>${dev.repo.url.up}/osadev-snapshots</url>
   		</snapshotRepository>
 		<site>
 			<id>${website.id}</id>
@@ -117,7 +128,7 @@
 		<repository>
      		<id>osadev.releases</id>
      		<name>Internal Releases</name>
-     		<url>${devrepo.url.up}/osadev-releases</url>
+     		<url>${dev.repo.url.up}/osadev-releases</url>
      		<releases>
      			<enabled>true</enabled>
      			<updatePolicy>always</updatePolicy>
@@ -126,7 +137,7 @@
   		<repository>
      		<id>osadev.snapshots</id>
      		<name>Internal Releases</name>
-     		<url>${devrepo.url.up}/osadev-snapshots</url>
+     		<url>${dev.repo.url.up}/osadev-snapshots</url>
      		<snapshots>
      			<enabled>true</enabled>
      			<updatePolicy>always</updatePolicy>
@@ -159,8 +170,122 @@
 			</snapshots>
 		</repository>
 	</repositories>
+	
+	<!-- OSA runs its own plugin repository to ensure availability of some third-party artifacts -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>${plugin.repo.id}</id>
+			<url>${plugin.repo.url.down}</url>
+			<name>${plugin.repo.name}</name>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<profiles>
+		<!-- This is a hack to fix maven bugs when using a flat multi-module structure -->
+		<!-- The idea is to automagically symlink the submodules withing the root module -->
+		<!-- The profile is automatically activated when a link is missing. --> 
+		<!-- By default this profile runs the exec:exec goal which runs a python script. -->
+		<!-- FIXME: UNTESTED in windows environment. -->
+		<profile>
+			<id>modules.missing</id>
+			<activation>
+				<file>
+					<missing>ooo.maven-config</missing>
+				</file>
+			</activation>
+		
+			<build>
+				<defaultGoal>exec:exec</defaultGoal>
+		
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.4.0</version>
+		
+						<executions>
+							<execution>
+								<id>site</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>pre-site</phase>
+								<inherited>false</inherited>
+							</execution>
+							<execution>
+								<id>build</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>initialize</phase>
+								<inherited>false</inherited>
+							</execution>
+							<!--  <execution>
+								<id>default</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution> -->
+						</executions>
+						
+						<configuration>
+							<executable>python</executable>
+							<goal>exec</goal>
+							<arguments>
+								<argument>src/python/symlink.py</argument>
+								<argument>-c</argument>
+							</arguments>
+						</configuration>
+						
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<!-- End of the flat multimodule trick: only declare sub-modules once the symlinks are created. -->
+		<profile>
+			<id>modules.found</id>
+			<activation>
+				<file>
+					<exists>ooo.maven-config</exists>
+				</file>
+			</activation>
+			
+			<build>
+			<plugins>
+			<plugin>
+    <artifactId>maven-clean-plugin</artifactId>
+    <version>3.0.0</version>
+    <configuration>
+      <filesets>
+      	<fileset>
+      	<directory>./</directory>
+   		<includes>
+   			<include>ooo.maven-config</include>
+   		</includes>
+          <followSymlinks>false</followSymlinks>
+         
+        </fileset>
+      </filesets>
+    </configuration>
+  </plugin>
+  </plugins>
+  </build>
+
+		<!-- Default list of modules -->
+		<modules>
+			<module>ooo.maven-config</module>
+		</modules>	
+		</profile>
+		
+		
+		<!-- Building javadoc is PIA. Only build on request by activating this profile. -->
 		<profile>
 			<id>javadoc-only</id>
 			<build>
@@ -233,22 +358,43 @@
 			</build>
 		</profile>
 	</profiles>
+	
+	
+	<!-- DEFAULT profile -->
 	<build>
+		<defaultGoal>test</defaultGoal>
+		<pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.4</version>
+          <dependencies>
+            <dependency><!-- add support for ssh/scp -->
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-ssh</artifactId>
+              <version>1.0</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    
 		<plugins>
-			
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.3</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<!-- <compilerVersion>1.5</compilerVersion> -->
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.3</version>
 				<configuration>
-					<stagingDirectory>/tmp/osaweb/0.7/</stagingDirectory>
+					<!-- Staging goes to 0.8 by default, unless otherwwise specified using the url tag -->
+					<stagingDirectory>/tmp/osaweb/0.8/</stagingDirectory>
 					<locales>en</locales>
 					<chmod>true</chmod>
 					<inputEncoding>UTF-8</inputEncoding>
@@ -256,7 +402,7 @@
 				</configuration>
 			</plugin>
 
-
+			<!-- See distribution management for artifact repo deployment  -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
@@ -283,7 +429,7 @@
 						<link>http://java.sun.com/j2se/1.5.0/docs/guide/javadoc/doclet/spec</link>
 						<link>${jdk.url}</link>
 					</links>
-					<source>${osa.bundle.version}</source>
+					<source>${version.base}</source>
 					<code>javadoc:aggregate</code>
 					<code>javadoc:test-aggregate</code>
 					<!-- <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet> -->
@@ -303,16 +449,9 @@
 						-postfixpackage -nodefontsize 9
 						-nodefontpackagesize 7
 					</additionalparam>
-					<!-- <doclet>gr.spinellis.umlgraph.doclet.UmlGraphDoc</doclet> <docletArtifact> 
-						<groupId>gr.spinellis</groupId> <artifactId>UmlGraph</artifactId> <version>4.6</version> 
-						</docletArtifact> <additionalparam> -inferrel -inferdep -hide java.* -collpackages 
-						java.util.* -qualify -postfixpackage -nodefontsize 9 -nodefontpackagesize 
-						7 </additionalparam> -->
 				</configuration>
 			</plugin>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
-				<executions> <execution> <id>attach-javadocs</id> <goals> <goal>jar</goal> 
-				</goals> </execution> </executions> </plugin> -->
+			
 			<!-- Add automatic generation of source archive to all descendent projects 
 				such that the sources can be automatically downloaded and installed along 
 				with the binary archive. -->
@@ -329,39 +468,9 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			
 		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.apache.jackrabbit</groupId>
-				<artifactId>jackrabbit-webdav</artifactId>
-				<version>2.10.0</version>
-			</extension>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh-external</artifactId>
-				<version>1.0-beta-6</version>
-			</extension>
-		</extensions>
 	</build>
-
-	<organization>
-		<name>INRIA</name>
-		<url>http://www.inria.fr/</url>
-	</organization>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>${devrepo.id}</id>
-			<url>${devrepo.url.down}</url>
-			<name>${devrepo.name}</name>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
+	
 
 </project>

@@ -42,11 +42,11 @@
 	</body>
 	<publishDate position="right" />
 	<version position="right" />
-	<skin>
+	<!-- <skin>
 		<groupId>org.apache.maven.skins</groupId>
 		<artifactId>maven-application-skin</artifactId>
-		<version>1.0</version>
+		<version>1.0</version> -->
     	<!-- <artifactId>maven-stylus-skin</artifactId> -->
     	<!-- <version>1.4</version> -->
-	</skin>
+	<!-- </skin> -->
 </project>
