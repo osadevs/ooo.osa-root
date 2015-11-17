@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--> 
+<!--                Open Simulation Architecture (OSA)                  -->
+<!--                                                                    -->
+<!--      This software is distributed under the terms of the           -->
+<!--           CECILL-C FREE SOFTWARE LICENSE AGREEMENT                 -->
+<!--  (see http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html) -->
+<!--                                                                    -->
+<!--  Copyright © 2006-2015 Université Nice Sophia Antipolis            -->
+<!--  Contact author: Olivier Dalle (olivier.dalle@unice.fr)            -->
+<!--                                                                    -->
+<!--  Parts of this software development were supported and hosted by   -->
+<!--  INRIA from 2006 to 2015, in the context of the common research    -->
+<!--  teams of INRIA and I3S, UMR CNRS 7172 (MASCOTTE, COATI, OASIS and -->
+<!--  SCALE).                                                           -->
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+		 
+	<modelVersion>4.0.0</modelVersion>
+	
+
+	<groupId>org.osadev.osa</groupId>
+	<artifactId>osa-root</artifactId>
+	<version>0.8.0-SNAPSHOT</version>
+	<name>OSA root</name>
+
+	<packaging>pom</packaging>
+	
+	<description>OSA stands for Open Simulation Architecture.
+	
+		OSA is primarily intended to be a federating platform for the simulation community: it is designed to favour
+		the integration of new or existing contributions at every level of its architecture.
+
+		The platform core supports discrete-event simulation engine(s) built on top of the ObjectWeb Consortium’s Fractal
+		component model. In OSA, the systems to be simulated are modeled and instrumented using Fractal components.
+		Fractal components offer many advanced and original features, such as multi-programming language support and
+		the ability to share sub-components. In OSA, the event handling is mostly hidden in the controller part of the components,
+		which alleviates noticeably the modeling process, but also ease the replacement of any part of the simulation engine.
+		Apart the simulation engine, OSA aims at integrating useful tools for modeling, developing, experimenting and analysing simulations.
+	</description>
+	
+	
+	<!-- NEW since version 0.8.X:                   -->
+	<!-- * Moved scm to git@github                  -->
+	<!-- * Changed web url to osadev.org            -->
+	<!-- * Changed group id and package prefix to org.osadev.osa (ooo) -->
+	
+	<url>http://www.osadev.org/</url>
+	
+	
+	<properties>
+		<!-- Javadoc location properties -->
+		<fractal.url>http://fractal.ow2.org/current/doc/javadoc/fractal/</fractal.url>
+		<asm.url>http://asm.ow2.org/asm30/javadoc/user/</asm.url>
+		<jdk.url>http://docs.oracle.com/javase/1.5.0/docs/api/</jdk.url>
+		<dot.executable.path>/opt/local/bin/dot</dot.executable.path>
+		
+		
+		<!-- project directory name  -->
+		<location>ooo.${project.artifactId}</location>
+		
+		<!-- scm location config: keep as is -->
+		<scm.url>osadevs/${location}.git</scm.url>
+		<scm.reg.url>scm:git:git://github.com/${scm.url}</scm.reg.url>
+		<scm.dev.url>scm:git:git@github.com:${scm.url}</scm.dev.url>
+		
+		<!-- OSA has its own deployement server with maven repo and web site -->
+		<devrepo.id>osadev.deployment</devrepo.id>
+		<devrepo.name>OSA Dev Repository</devrepo.name>
+		<devrepo.url.up>http://mvn.osadev.org:8081/content/repositories</devrepo.url.up>
+		
+		<!-- Starting OSA v0.7 the whole web-site is versioned, except the web-site
+			root. -->
+		<!-- The web-site root is handled as a separate dependency with id f.i.o.wwwroot. -->
+		<website.id>osawebsite</website.id>
+		<website.url.up>dav:http://osa.inria.fr/osa_website/0.7/</website.url.up>
+		<website.rooturl>http://osa.inria.fr/</website.rooturl>
+	</properties>
+  	
+	<scm>
+		<url>https://github.com/${scm.url}</url>
+		<connection>${scm.reg.url}</connection>
+		<developerConnection>${scm.dev.url}</developerConnection>
+  	</scm>
+  	
+  	<licenses>
+		<license>
+			<name>CeCILL-C</name>
+			<comments>French equivalent to LGPL</comments>
+			<url>http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	
+	<distributionManagement>
+		<repository>
+     		<id>osadev.releases</id>
+     		<name>Internal Releases</name>
+     		<url>${devrepo.url.up}/osadev-releases</url>
+  		</repository>
+  		<snapshotRepository>
+     		<id>osadev.snapshots</id>
+     		<name>Internal Releases</name>
+     		<url>${devrepo.url.up}/osadev-snapshots</url>
+  		</snapshotRepository>
+		<site>
+			<id>${website.id}</id>
+			<url>${website.url.up}</url>
+		</site>
+	</distributionManagement>
+
+	
+	<repositories>
+		<!-- OSA repository -->
+		<repository>
+     		<id>osadev.releases</id>
+     		<name>Internal Releases</name>
+     		<url>${devrepo.url.up}/osadev-releases</url>
+     		<releases>
+     			<enabled>true</enabled>
+     			<updatePolicy>always</updatePolicy>
+     		</releases>
+  		</repository>
+  		<repository>
+     		<id>osadev.snapshots</id>
+     		<name>Internal Releases</name>
+     		<url>${devrepo.url.up}/osadev-snapshots</url>
+     		<snapshots>
+     			<enabled>true</enabled>
+     			<updatePolicy>always</updatePolicy>
+     		</snapshots>
+  		</repository>
+
+		<!-- Fractal dependencies hosted by OW2 -->
+		<repository>
+			<id>objectweb-repo-legacy</id>
+			<name>ObjectWeb Repository</name>
+			<url>http://repository.ow2.org/nexus/content/repositories/ow2-legacy/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>objectweb-repo-release</id>
+			<name>ObjectWeb Repository</name>
+			<url>http://repository.ow2.org/nexus/content/repositories/releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>objectweb-snapshot-repo</id>
+			<name>ObjectWeb Snapshot Repository</name>
+			<url>http://repository.ow2.org/nexus/content/repositories/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<profiles>
+		<profile>
+			<id>javadoc-only</id>
+			<build>
+		<plugins>
+			<plugin>
+				<groupId>com.github.jeluard</groupId>
+				<artifactId>plantuml-maven-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<sourceFiles>
+						<directory>${basedir}</directory>
+						<includes>
+							<include>src/main/plantuml/**/*.txt</include>
+						</includes>
+					</sourceFiles>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>net.sourceforge.plantuml</groupId>
+						<artifactId>plantuml</artifactId>
+						<version>7999</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<version>2.10.3</version>
+				<configuration>
+					<show>package</show>
+					<version>true</version>
+					<javadocVersion>1.5</javadocVersion>
+					<links>
+						<link>${asm.url}</link>
+						<link>${fractal.url}</link>
+						<link>http://fractal.ow2.org/current/doc/javadoc/fractal-adl/</link>
+						<link>http://fractal.ow2.org/fractaladl-site/current/task-framework/apidocs/</link>
+						<link>http://fractal.ow2.org/current/doc/javadoc/julia/</link>
+						<link>http://java.sun.com/j2se/1.5.0/docs/guide/javadoc/doclet/spec</link>
+						<link>${jdk.url}</link>
+					</links>
+					<source>${osa.bundle.version}</source>
+					<code>javadoc:aggregate</code>
+					<code>javadoc:test-aggregate</code>
+					<!-- <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet> -->
+					<!-- use this line or use the variable GRAPHVIZ_HOME <docletPath>/opt/local/bin/dot</docletPath> -->
+					<useStandardDocletOptions>true</useStandardDocletOptions>
+
+					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+					<docletArtifact>
+						<groupId>org.umlgraph</groupId>
+						<artifactId>umlgraph</artifactId>
+						<version>5.6.6</version>
+					</docletArtifact>
+					<additionalparam>
+						-dotexecutable ${dot.executable.path}
+						-inferrel -inferdep -hide java.*
+						-collpackages java.util.* -qualify
+						-postfixpackage -nodefontsize 9
+						-nodefontpackagesize 7
+					</additionalparam>
+					<!-- <doclet>gr.spinellis.umlgraph.doclet.UmlGraphDoc</doclet> <docletArtifact> 
+						<groupId>gr.spinellis</groupId> <artifactId>UmlGraph</artifactId> <version>4.6</version> 
+						</docletArtifact> <additionalparam> -inferrel -inferdep -hide java.* -collpackages 
+						java.util.* -qualify -postfixpackage -nodefontsize 9 -nodefontpackagesize 
+						7 </additionalparam> -->
+				</configuration>
+			</plugin>
+			</plugins>
+			</build>
+		</profile>
+	</profiles>
+	<build>
+		<plugins>
+			
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<!-- <compilerVersion>1.5</compilerVersion> -->
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<stagingDirectory>/tmp/osaweb/0.7/</stagingDirectory>
+					<locales>en</locales>
+					<chmod>true</chmod>
+					<inputEncoding>UTF-8</inputEncoding>
+					<outputEncoding>UTF-8</outputEncoding>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+
+			<!-- Add automatic generation of javadoc archive to all descendent projects 
+				such that the javadoc can be automatically downloaded and installed along 
+				with the binary archive. -->
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<version>2.10.3</version>
+				<configuration>
+					<show>package</show>
+					<version>true</version>
+					<javadocVersion>1.5</javadocVersion>
+					<links>
+						<link>${asm.url}</link>
+						<link>${fractal.url}</link>
+						<link>http://fractal.ow2.org/current/doc/javadoc/fractal-adl/</link>
+						<link>http://fractal.ow2.org/fractaladl-site/current/task-framework/apidocs/</link>
+						<link>http://fractal.ow2.org/current/doc/javadoc/julia/</link>
+						<link>http://java.sun.com/j2se/1.5.0/docs/guide/javadoc/doclet/spec</link>
+						<link>${jdk.url}</link>
+					</links>
+					<source>${osa.bundle.version}</source>
+					<code>javadoc:aggregate</code>
+					<code>javadoc:test-aggregate</code>
+					<!-- <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet> -->
+					<!-- use this line or use the variable GRAPHVIZ_HOME <docletPath>/opt/local/bin/dot</docletPath> -->
+					<useStandardDocletOptions>true</useStandardDocletOptions>
+
+					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+					<docletArtifact>
+						<groupId>org.umlgraph</groupId>
+						<artifactId>umlgraph</artifactId>
+						<version>5.6.6</version>
+					</docletArtifact>
+					<additionalparam>
+						-dotexecutable ${dot.executable.path}
+						-inferrel -inferdep -hide java.*
+						-collpackages java.util.* -qualify
+						-postfixpackage -nodefontsize 9
+						-nodefontpackagesize 7
+					</additionalparam>
+					<!-- <doclet>gr.spinellis.umlgraph.doclet.UmlGraphDoc</doclet> <docletArtifact> 
+						<groupId>gr.spinellis</groupId> <artifactId>UmlGraph</artifactId> <version>4.6</version> 
+						</docletArtifact> <additionalparam> -inferrel -inferdep -hide java.* -collpackages 
+						java.util.* -qualify -postfixpackage -nodefontsize 9 -nodefontpackagesize 
+						7 </additionalparam> -->
+				</configuration>
+			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
+				<executions> <execution> <id>attach-javadocs</id> <goals> <goal>jar</goal> 
+				</goals> </execution> </executions> </plugin> -->
+			<!-- Add automatic generation of source archive to all descendent projects 
+				such that the sources can be automatically downloaded and installed along 
+				with the binary archive. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-webdav</artifactId>
+				<version>2.10.0</version>
+			</extension>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh-external</artifactId>
+				<version>1.0-beta-6</version>
+			</extension>
+		</extensions>
+	</build>
+
+	<organization>
+		<name>INRIA</name>
+		<url>http://www.inria.fr/</url>
+	</organization>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>${devrepo.id}</id>
+			<url>${devrepo.url.down}</url>
+			<name>${devrepo.name}</name>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>
