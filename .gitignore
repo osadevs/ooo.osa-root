@@ -4,3 +4,6 @@
 #*
 target/
 /bin/
+.pydevproject
+*.pyc
+ooo.maven-config
