@@ -31,7 +31,11 @@ import os,sys,string
 def link():
     try:
         os.symlink("../ooo.maven-config","ooo.maven-config")
-        print "Symlinks created. Rerun maven."
+        print """
+     vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+     >>>>> Symlinks created. Rerun last maven command. <<<<<
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""
     except:
         pass
     

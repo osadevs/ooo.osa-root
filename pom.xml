@@ -88,6 +88,8 @@
 		<website.rooturl>http://www.osadev.org/0.8/</website.rooturl>
 		
 		<version.base>0.8</version.base>
+		
+		<site.stage.dir>/tmp/osaweb/${version.base}/</site.stage.dir>
 	</properties>
   	
 	<scm>
@@ -196,6 +198,7 @@
 			<id>modules.missing</id>
 			<activation>
 				<file>
+					<!-- Only check one to keep it simple and easy to maintain. -->
 					<missing>ooo.maven-config</missing>
 				</file>
 			</activation>
@@ -226,12 +229,6 @@
 								<phase>initialize</phase>
 								<inherited>false</inherited>
 							</execution>
-							<!--  <execution>
-								<id>default</id>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-							</execution> -->
 						</executions>
 						
 						<configuration>
@@ -258,219 +255,96 @@
 			</activation>
 			
 			<build>
-			<plugins>
-			<plugin>
-    <artifactId>maven-clean-plugin</artifactId>
-    <version>3.0.0</version>
-    <configuration>
-      <filesets>
-      	<fileset>
-      	<directory>./</directory>
-   		<includes>
-   			<include>ooo.maven-config</include>
-   		</includes>
-          <followSymlinks>false</followSymlinks>
-         
-        </fileset>
-      </filesets>
-    </configuration>
-  </plugin>
-  </plugins>
-  </build>
-
-		<!-- Default list of modules -->
-		<modules>
-			<module>ooo.maven-config</module>
-		</modules>	
-		</profile>
-		
-		
-		<!-- Building javadoc is PIA. Only build on request by activating this profile. -->
-		<profile>
-			<id>javadoc-only</id>
-			<build>
-		<plugins>
-			<plugin>
-				<groupId>com.github.jeluard</groupId>
-				<artifactId>plantuml-maven-plugin</artifactId>
-				<version>1.1</version>
-				<configuration>
-					<sourceFiles>
-						<directory>${basedir}</directory>
-						<includes>
-							<include>src/main/plantuml/**/*.txt</include>
-						</includes>
-					</sourceFiles>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>net.sourceforge.plantuml</groupId>
-						<artifactId>plantuml</artifactId>
-						<version>7999</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<groupId>org.apache.maven.plugins</groupId>
-				<version>2.10.3</version>
-				<configuration>
-					<show>package</show>
-					<version>true</version>
-					<javadocVersion>1.5</javadocVersion>
-					<links>
-						<link>${asm.url}</link>
-						<link>${fractal.url}</link>
-						<link>http://fractal.ow2.org/current/doc/javadoc/fractal-adl/</link>
-						<link>http://fractal.ow2.org/fractaladl-site/current/task-framework/apidocs/</link>
-						<link>http://fractal.ow2.org/current/doc/javadoc/julia/</link>
-						<link>http://java.sun.com/j2se/1.5.0/docs/guide/javadoc/doclet/spec</link>
-						<link>${jdk.url}</link>
-					</links>
-					<source>${osa.bundle.version}</source>
-					<code>javadoc:aggregate</code>
-					<code>javadoc:test-aggregate</code>
-					<!-- <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet> -->
-					<!-- use this line or use the variable GRAPHVIZ_HOME <docletPath>/opt/local/bin/dot</docletPath> -->
-					<useStandardDocletOptions>true</useStandardDocletOptions>
-
-					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
-					<docletArtifact>
-						<groupId>org.umlgraph</groupId>
-						<artifactId>umlgraph</artifactId>
-						<version>5.6.6</version>
-					</docletArtifact>
-					<additionalparam>
-						-dotexecutable ${dot.executable.path}
-						-inferrel -inferdep -hide java.*
-						-collpackages java.util.* -qualify
-						-postfixpackage -nodefontsize 9
-						-nodefontpackagesize 7
-					</additionalparam>
-					<!-- <doclet>gr.spinellis.umlgraph.doclet.UmlGraphDoc</doclet> <docletArtifact> 
-						<groupId>gr.spinellis</groupId> <artifactId>UmlGraph</artifactId> <version>4.6</version> 
-						</docletArtifact> <additionalparam> -inferrel -inferdep -hide java.* -collpackages 
-						java.util.* -qualify -postfixpackage -nodefontsize 9 -nodefontpackagesize 
-						7 </additionalparam> -->
-				</configuration>
-			</plugin>
-			</plugins>
+				<plugins>
+					<plugin>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>3.0.0</version>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>./</directory>
+									<includes>
+										<include>ooo.maven-config</include>
+									</includes>
+									<followSymlinks>false</followSymlinks>
+								</fileset>
+								<fileset>
+									<directory>${site.stage.dir}</directory>
+									<followSymlinks>false</followSymlinks>
+								</fileset>
+							</filesets>
+						</configuration>
+					</plugin>
+				</plugins>
 			</build>
+
+			<!-- Default list of modules -->
+			<modules>
+				<module>ooo.maven-config</module>
+			</modules>	
 		</profile>
+		
 	</profiles>
-	
 	
 	<!-- DEFAULT profile -->
 	<build>
 		<defaultGoal>test</defaultGoal>
 		<pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.4</version>
-          <dependencies>
-            <dependency><!-- add support for ssh/scp -->
-              <groupId>org.apache.maven.wagon</groupId>
-              <artifactId>wagon-ssh</artifactId>
-              <version>1.0</version>
-            </dependency>
-          </dependencies>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-    
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.4</version>
+					<dependencies>
+						<dependency> <!-- add support for ssh/scp -->
+							<groupId>org.apache.maven.wagon</groupId>
+							<artifactId>wagon-ssh</artifactId>
+							<version>1.0</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.maven.doxia</groupId>
+							<artifactId>doxia-module-docbook-simple</artifactId>
+							<version>1.6</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.5.1</version>
+				</plugin>
+				
+				<!-- See distribution management for artifact repo deployment -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	
 		<plugins>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			
-			<plugin>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.3</version>
 				<configuration>
-					<!-- Staging goes to 0.8 by default, unless otherwwise specified using the url tag -->
-					<stagingDirectory>/tmp/osaweb/0.8/</stagingDirectory>
+					<stagingDirectory>${site.stage.dir}</stagingDirectory>
 					<locales>en</locales>
 					<chmod>true</chmod>
 					<inputEncoding>UTF-8</inputEncoding>
 					<outputEncoding>UTF-8</outputEncoding>
 				</configuration>
+				
 			</plugin>
-
-			<!-- See distribution management for artifact repo deployment  -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.7</version>
-			</plugin>
-
-			<!-- Add automatic generation of javadoc archive to all descendent projects 
-				such that the javadoc can be automatically downloaded and installed along 
-				with the binary archive. -->
-			<plugin>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<groupId>org.apache.maven.plugins</groupId>
-				<version>2.10.3</version>
-				<configuration>
-					<show>package</show>
-					<version>true</version>
-					<javadocVersion>1.5</javadocVersion>
-					<links>
-						<link>${asm.url}</link>
-						<link>${fractal.url}</link>
-						<link>http://fractal.ow2.org/current/doc/javadoc/fractal-adl/</link>
-						<link>http://fractal.ow2.org/fractaladl-site/current/task-framework/apidocs/</link>
-						<link>http://fractal.ow2.org/current/doc/javadoc/julia/</link>
-						<link>http://java.sun.com/j2se/1.5.0/docs/guide/javadoc/doclet/spec</link>
-						<link>${jdk.url}</link>
-					</links>
-					<source>${version.base}</source>
-					<code>javadoc:aggregate</code>
-					<code>javadoc:test-aggregate</code>
-					<!-- <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet> -->
-					<!-- use this line or use the variable GRAPHVIZ_HOME <docletPath>/opt/local/bin/dot</docletPath> -->
-					<useStandardDocletOptions>true</useStandardDocletOptions>
-
-					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
-					<docletArtifact>
-						<groupId>org.umlgraph</groupId>
-						<artifactId>umlgraph</artifactId>
-						<version>5.6.6</version>
-					</docletArtifact>
-					<additionalparam>
-						-dotexecutable ${dot.executable.path}
-						-inferrel -inferdep -hide java.*
-						-collpackages java.util.* -qualify
-						-postfixpackage -nodefontsize 9
-						-nodefontpackagesize 7
-					</additionalparam>
-				</configuration>
-			</plugin>
-			
-			<!-- Add automatic generation of source archive to all descendent projects 
-				such that the sources can be automatically downloaded and installed along 
-				with the binary archive. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
 		</plugins>
 	</build>
 	
+	<modules>
+		<!-- NO MODULE IN DEFAULT PROFILE -->
+		<!-- Due to the flat subproject organization, submodules have to be symlinked first. -->
+		<!-- See modules.missing and modules.found profiles. -->
+		<!-- (New modules are declared at end of modules.found)-->
+	</modules>
 
 </project>
