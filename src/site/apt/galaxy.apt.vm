@@ -16,23 +16,31 @@ OSA Projects Galaxy
    called SPREADS for which a demo version of a P2P simulation has been developped
    and is available on the INRIA OSA forge.
    
-   The current version 0.7 is a heavy refactoring of the latest by Olivier but still 
+   The version 0.7 was a heavy refactoring of the latest by Olivier but still 
    including parts of the version contributed by Judicael during his PhD thesis and based
    on the Spoon Java code processor (rather the AspectJ in previous versions).
    The SusperScheduler has been totally rewritten by Olivier, and the project structure
    has been scattered into many children project with a flat structure rather than submodules.
    However, "Bundles" grouping sets of sub-projects are provided for convenience.
    
+   The current version 0.8 is lighter refactoring with focus on distribution and project
+   management: a new domain osadev.org is used, and packages have been renamed accordingly.
+   The overall project hierarchy has been redesigned and the maven phase have been fine tuned
+   such that every lifecycle can run smoothly. The sources have also moved to github.
+   
    Here are the corresponding maven (sub)projects of OSA:
    
 *-----------*-------------------+-------------------+--------------------------------+----------+
-| <<name>>  | <<parent>>        |  <<Maven artifact>>     | <<Description>>                | <<SVN>> (*)   |
+| <<name>>  | <<parent>>        |  <<Maven artifact>>     | <<Description>>                | <<GIT>> (*)   |
 *-----------*-------------------+-------------------+--------------------------------+----------+
-|<<<OSA Root>>> |  None             | <<<f.i.o:>>>         | Root project. Almost empty,                                              |  <<< <svnRoot>/packages/root/>>>  |  
-|               |                   |   <<<osa-root>>>     | some common defs. Main location of the common site sources (Doxia/APT).  |   <<<fr.inria.osa.root>>>       |
+|{{{./index.html}OSA Root}} |  None             | <<<o.o.o:>>>         | Root project. Almost empty,                                              |  <<< <GH>/osadevs/ooo.osa-root.git>>>  |  
+|               |                   |   <<<osa-root>>>     | some common defs. Main location of the common site sources (Doxia/APT).  |         |
 *-----------*-------------------+-------------------+--------------------------------+----------+
-|{{{./osa-simapis/index.html}simapis }}| <<<f.i.o:>>>   |<<<f.i.o.simapis:>>>  | Common ancestor for all APIs.  |  <<< <svnRoot>/packages/apis/>>> |  
-|                                      | <<<osa-root>>> |  <<<osa-simapis>>> |                                |  <<<fr.inria.osa.simapis>>>        |
+|{{{./maven-config/index.html}Maven Config}} |  <<<o.o.o:>>>             | <<<o.o.o:>>>         | Configuration project, to be used as effective root by                  |  <<< <GH>/osadevs/ooo.maven-config.git>>>  |  
+|               |     <<<osa-root>>>         |   <<<maven-config>>>     | other modules. Contains dependencies specifications.  |          |
+*-----------*-------------------+-------------------+--------------------------------+----------+
+|{{{./maven-config/osa-simapis/index.html}simapis}}| <<<o.o.o:>>>   |<<<o.o.o.simapis:>>>  | Common ancestor for all APIs.  |  <<< <GH>/osadevs/ooo.simapis.git>>> |  
+|                                      | <<<maven-config>>> |  <<<osa-simapis>>> |                                |  <<<org.osadev.osa.simapis>>>        |
 *-----------*-------------------+-------------------+--------------------------------+----------+
 |{{{./osa-simapis/osa-simapis-basic/index.html}<<<basic API>>>}}|<<<f.i.o.simapis:>>>  | <<<f.i.o.simapis:>>>       | OSA Reference API. Supports event-driven  |  <<< <svnRoot>/packages/apis/>>>                     |
 |                                                               | <<<osa-simapis>>>     | <<<osa-simapis-basic>>>   | and process-oriented modeling.            |  <<<fr.inria.osa.simapis.basic>>>                    |  

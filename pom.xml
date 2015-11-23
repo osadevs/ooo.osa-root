@@ -53,6 +53,11 @@
 		<name>Université Nice Sophia Antipolis</name>
 		<url>http://www.unice.fr/</url>
 	</organization>
+	
+	<issueManagement>
+		<url>https://github.com/osadevs/ooo.${project.artifactId}/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
 		
 	<properties>
 		<!-- Javadoc location properties -->
@@ -90,6 +95,17 @@
 		<version.base>0.8</version.base>
 		
 		<site.stage.dir>/tmp/osaweb/${version.base}/</site.stage.dir>
+		
+		<!-- Get rid of warnings about encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    	
+    	<!-- Fix javadoc bug -->
+    	<!--  works: <javadoc.aggregate.excludes>org.osadev.osa.engines.newdes.impl:org.osadev.osa.engines.newdes.impl.llong:org.osadev.osa.engines.newdes.membrane</javadoc.aggregate.excludes> -->
+    	<!--  works: <javadoc.aggregate.excludes>org.osadev.osa.engines.newdes.impl:org.osadev.osa.engines.newdes.impl.llong</javadoc.aggregate.excludes> -->
+    	<!--  fails: <javadoc.aggregate.excludes>org.osadev.osa.engines.newdes.impl.llong</javadoc.aggregate.excludes> -->
+    	<!--  <javadoc.aggregate.excludes>org.osadev.osa.engines.newdes.ximpl</javadoc.aggregate.excludes> -->
+    	<!--  <javadoc.aggregate.excludes>org.osadev.osa.engines.newdes.ximpl:org.osadev.osa.engines.newdes.ximpl</javadoc.aggregate.excludes> -->
 	</properties>
   	
 	<scm>
@@ -254,6 +270,22 @@
 				</file>
 			</activation>
 			
+			<!-- Default list of modules -->
+			<modules>
+				<module>ooo.maven-config</module>
+				<module>ooo.simapis</module>
+				<module>ooo.engines</module>	
+				<module>ooo.simapis.newdes</module>
+				<module>ooo.simapis.newdes.osalet</module>
+				<module>ooo.runtime.newdes</module>
+				<module>ooo.runtime.newdes.logger</module>
+				<module>ooo.engines.newdes</module>
+				<module>ooo.runtime.newdes.launcher.event</module>
+			</modules>	
+		</profile>
+			
+		<profile>
+			<id>unlink</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -261,10 +293,18 @@
 						<version>3.0.0</version>
 						<configuration>
 							<filesets>
-								<fileset>
+									<fileset>
 									<directory>./</directory>
 									<includes>
 										<include>ooo.maven-config</include>
+										<include>ooo.simapis</include>
+										<include>ooo.simapis.newdes</include>
+										<include>ooo.simapis.newdes.osalet</include>
+										<include>ooo.runtime.newdes</include>
+										<include>ooo.runtime.newdes.logger</include>
+										<include>ooo.engines</include>
+										<include>ooo.engines.newdes</include>
+										<include>ooo.runtime.newdes.launcher.event</include>
 									</includes>
 									<followSymlinks>false</followSymlinks>
 								</fileset>
@@ -278,15 +318,13 @@
 				</plugins>
 			</build>
 
-			<!-- Default list of modules -->
-			<modules>
-				<module>ooo.maven-config</module>
-			</modules>	
 		</profile>
 		
 	</profiles>
 	
 	<!-- DEFAULT profile -->
+	
+	
 	<build>
 		<defaultGoal>test</defaultGoal>
 		<pluginManagement>
@@ -308,7 +346,23 @@
 						</dependency>
 					</dependencies>
 				</plugin>
-				
+			
+				<plugin>
+					<groupId>com.github.github</groupId>
+					<artifactId>site-maven-plugin</artifactId>
+					<version>0.12</version>
+					<configuration>
+						<message>Creating site for ${project.version}</message>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>site</goal>
+							</goals>
+							<phase>site</phase>
+						</execution>
+					</executions>
+				</plugin>
 				
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -337,8 +391,195 @@
 				</configuration>
 				
 			</plugin>
+		
+		
+		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.3</version>
+				<configuration>
+          			<excludePackageNames>${javadoc.aggregate.excludes}</excludePackageNames>
+				
+					<detectLinks>true</detectLinks>
+					<!-- <aggregate>true</aggregate> -->
+					<minmemory>128m</minmemory>
+					<maxmemory>2g</maxmemory>
+					<verbose>true</verbose>
+					<links>
+						<link>${asm.url}</link>
+						<link>${fractal.url}</link>
+						<link>http://fractal.ow2.org/current/doc/javadoc/fractal/</link>
+						<link>http://fractal.ow2.org/current/doc/javadoc/fractal-adl/</link>
+						<link>http://fractal.ow2.org/fractaladl-site/current/task-framework/apidocs/</link>
+						<link>http://fractal.ow2.org/current/doc/javadoc/julia/</link>
+						<link>http://java.sun.com/j2se/1.5.0/docs/guide/javadoc/doclet/spec</link>
+						<link>${jdk.url}</link>
+					</links>
+
+					<show>package</show>
+					<version>true</version>
+					<!--  <javadocVersion>1.6</javadocVersion> -->
+
+					<!--  <source>${osa.bundle.version}</source> -->
+					
+					<!--  <code>javadoc:aggregate</code> -->
+					<!-- <code>javadoc:test-aggregate</code> -->
+					<!-- <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet> -->
+					<!-- use this line or use the variable GRAPHVIZ_HOME <docletPath>/opt/local/bin/dot</docletPath> -->
+					<!--  <useStandardDocletOptions>true</useStandardDocletOptions> -->
+
+					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+					<docletArtifact>
+						<groupId>org.umlgraph</groupId>
+						<artifactId>umlgraph</artifactId>
+						<version>5.6</version>
+					</docletArtifact>
+					<additionalparam>
+						-dotexecutable ${dot.executable.path}
+						-inferrel -inferdep -hide java.*
+						-collpackages java.util.* -qualify
+						-postfixpackage -nodefontsize 9
+						-nodefontpackagesize 7
+					</additionalparam>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<tagBase>${scm.reg.url}</tagBase>
+					<checkModificationExcludes>
+						<checkModificationExclude>.project</checkModificationExclude>
+					</checkModificationExcludes>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<!--  <excludeDefaults>true</excludeDefaults> -->
+		<plugins>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.3</version>
+				
+				<reportSets>
+					<reportSet><!-- by default, id = "default" -->
+						<reports><!-- select non-aggregate reports -->
+							<!-- <report>javadoc-no-fork</report> -->
+							<report>javadoc</report>
+						</reports>
+					</reportSet>
+					<reportSet><!-- aggregate reportSet, to define in poms having modules -->
+						<id>aggregate</id>
+						<inherited>false</inherited><!-- don't run aggregate in child modules -->
+						<reports>
+							<report>aggregate</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+				
+				<configuration>
+					<excludePackageNames>${javadoc.aggregate.excludes}</excludePackageNames>
+					<detectLinks>true</detectLinks>
+					<!-- <aggregate>true</aggregate> -->
+					<minmemory>128m</minmemory>
+					<maxmemory>2g</maxmemory>
+					<links>
+						<link>${asm.url}</link>
+						<link>${fractal.url}</link>
+						<link>http://fractal.ow2.org/current/doc/javadoc/fractal/</link>
+						<link>http://fractal.ow2.org/current/doc/javadoc/fractal-adl/</link>
+						<link>http://fractal.ow2.org/fractaladl-site/current/task-framework/apidocs/</link>
+						<link>http://fractal.ow2.org/current/doc/javadoc/julia/</link>
+						<link>http://java.sun.com/j2se/1.5.0/docs/guide/javadoc/doclet/spec</link>
+						<link>${jdk.url}</link>
+					</links>
+
+					<show>package</show>
+					<version>true</version>
+					<!--  <javadocVersion>1.6</javadocVersion>-->
+
+					<source>${osa.bundle.version}</source>
+					
+					<code>javadoc:aggregate</code>
+					<!-- <code>javadoc:test-aggregate</code> -->
+					<!-- <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet> -->
+					<!-- use this line or use the variable GRAPHVIZ_HOME <docletPath>/opt/local/bin/dot</docletPath> -->
+					<useStandardDocletOptions>true</useStandardDocletOptions>
+
+					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+					<docletArtifact>
+						<groupId>org.umlgraph</groupId>
+						<artifactId>umlgraph</artifactId>
+						<version>5.6</version>
+					</docletArtifact>
+					<additionalparam>
+						-dotexecutable ${dot.executable.path}
+						-inferrel -inferdep -hide java.*
+						-collpackages java.util.* -qualify
+						-postfixpackage -nodefontsize 9
+						-nodefontpackagesize 7
+					</additionalparam>
+				</configuration>
+
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.5.2</version>
+				<configuration>
+					<targetJdk>1.6</targetJdk>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.14</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.6</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>scm</report>
+							<report>index</report>
+							<report>license</report>
+							<report>dependencies</report>
+							<report>dependency-info</report>
+							<report>modules</report>
+							<report>dependency-management</report>
+							<report>distribution-management</report>
+							<report>issue-tracking</report>
+							<report>plugins</report>
+							<report>plugin-management</report>
+							<report>summary</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<plugin> 
+				<groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-jxr-plugin</artifactId> 
+				<version>2.5</version> 
+				<reportSets> 
+					<reportSet> 
+						<id>aggregate</id> 
+						<reports> 
+							<report>aggregate</report> 
+							<!--  <report>test-aggregate</report> -->
+						</reports> 
+					</reportSet> 
+				</reportSets> 
+			</plugin>
+		</plugins>
+	</reporting>
+	
 	
 	<modules>
 		<!-- NO MODULE IN DEFAULT PROFILE -->

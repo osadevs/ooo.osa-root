@@ -28,20 +28,29 @@ Options:
 
 import os,sys,string
 
+links = ["ooo.maven-config", "ooo.simapis","ooo.simapis.newdes", "ooo.simapis.newdes.osalet",
+         "ooo.runtime.newdes","ooo.runtime.newdes.logger", "ooo.runtime.newdes.launcher.event",
+         "ooo.engines", "ooo.engines.newdes"]
+
 def link():
-    try:
-        os.symlink("../ooo.maven-config","ooo.maven-config")
-        print """
+    for f in links:
+        print "Symlink: %s:"%(f),
+        try:
+            os.symlink("../%s"%(f),f)
+            print "ok."
+        except:
+            print "Failed (not fatal)."
+
+    print """
      vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
      >>>>> Symlinks created. Rerun last maven command. <<<<<
      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 """
-    except:
-        pass
     
 def unlink():
     try:
-        os.unlink("ooo.maven-config")
+        for f in links: 
+            os.unlink(f) 
         print "Symlinks cleared."
     except:
         pass
