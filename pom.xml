@@ -367,8 +367,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>2.5.3</version>
 				</plugin>
+				<plugin>
+              		<artifactId>maven-scm-plugin</artifactId>
+              		<version>1.9</version>
+              	</plugin>
 				
 				<!-- See distribution management for artifact repo deployment -->
 				<plugin>
@@ -443,6 +447,15 @@
 					</additionalparam>
 				</configuration>
 			</plugin>
+			
+			<!-- Keep this on with release plugin. -->
+			<plugin>
+              <artifactId>maven-scm-plugin</artifactId>
+              <configuration>
+              		<connectionType>developerConnection</connectionType>
+                  <tag>${project.artifactId}-${project.version}</tag>
+              </configuration>
+          	</plugin>
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
