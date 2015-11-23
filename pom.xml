@@ -371,7 +371,7 @@
 				</plugin>
 				<plugin>
               		<artifactId>maven-scm-plugin</artifactId>
-              		<version>1.9</version>
+              		<version>1.9.4</version>
               	</plugin>
 				
 				<!-- See distribution management for artifact repo deployment -->
