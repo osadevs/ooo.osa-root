@@ -203,124 +203,7 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<profiles>
-		<!-- This is a hack to fix maven bugs when using a flat multi-module structure -->
-		<!-- The idea is to automagically symlink the submodules withing the root module -->
-		<!-- The profile is automatically activated when a link is missing. --> 
-		<!-- By default this profile runs the exec:exec goal which runs a python script. -->
-		<!-- FIXME: UNTESTED in windows environment. -->
-		<profile>
-			<id>modules.missing</id>
-			<activation>
-				<file>
-					<!-- Only check one to keep it simple and easy to maintain. -->
-					<missing>ooo.maven-config</missing>
-				</file>
-			</activation>
-		
-			<build>
-				<defaultGoal>exec:exec</defaultGoal>
-		
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.4.0</version>
-		
-						<executions>
-							<execution>
-								<id>site</id>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-								<phase>pre-site</phase>
-								<inherited>false</inherited>
-							</execution>
-							<execution>
-								<id>build</id>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-								<phase>initialize</phase>
-								<inherited>false</inherited>
-							</execution>
-						</executions>
-						
-						<configuration>
-							<executable>python</executable>
-							<goal>exec</goal>
-							<arguments>
-								<argument>src/python/symlink.py</argument>
-								<argument>-c</argument>
-							</arguments>
-						</configuration>
-						
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		
-		<!-- End of the flat multimodule trick: only declare sub-modules once the symlinks are created. -->
-		<profile>
-			<id>modules.found</id>
-			<activation>
-				<file>
-					<exists>ooo.maven-config</exists>
-				</file>
-			</activation>
-			
-			<!-- Default list of modules -->
-			<modules>
-				<module>ooo.maven-config</module>
-				<module>ooo.simapis</module>
-				<module>ooo.engines</module>	
-				<module>ooo.simapis.newdes</module>
-				<module>ooo.simapis.newdes.osalet</module>
-				<module>ooo.runtime.newdes</module>
-				<module>ooo.runtime.newdes.logger</module>
-				<module>ooo.engines.newdes</module>
-				<module>ooo.runtime.newdes.launcher.event</module>
-			</modules>	
-		</profile>
-			
-		<profile>
-			<id>unlink</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-clean-plugin</artifactId>
-						<version>3.0.0</version>
-						<configuration>
-							<filesets>
-									<fileset>
-									<directory>./</directory>
-									<includes>
-										<include>ooo.maven-config</include>
-										<include>ooo.simapis</include>
-										<include>ooo.simapis.newdes</include>
-										<include>ooo.simapis.newdes.osalet</include>
-										<include>ooo.runtime.newdes</include>
-										<include>ooo.runtime.newdes.logger</include>
-										<include>ooo.engines</include>
-										<include>ooo.engines.newdes</include>
-										<include>ooo.runtime.newdes.launcher.event</include>
-									</includes>
-									<followSymlinks>false</followSymlinks>
-								</fileset>
-								<fileset>
-									<directory>${site.stage.dir}</directory>
-									<followSymlinks>false</followSymlinks>
-								</fileset>
-							</filesets>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-
-		</profile>
-		
-	</profiles>
+	
 	
 	<!-- DEFAULT profile -->
 	
@@ -595,10 +478,15 @@
 	
 	
 	<modules>
-		<!-- NO MODULE IN DEFAULT PROFILE -->
-		<!-- Due to the flat subproject organization, submodules have to be symlinked first. -->
-		<!-- See modules.missing and modules.found profiles. -->
-		<!-- (New modules are declared at end of modules.found)-->
+		<module>../ooo.maven-config/</module>
+		<module>../ooo.simapis</module>
+		<module>../ooo.simapis.newdes</module>
+		<module>../ooo.engines</module>	
+    	<module>../ooo.simapis.newdes.osalet</module>
+    	<module>../ooo.runtime.newdes</module>
+    	<module>../ooo.runtime.newdes.logger</module>
+    	<module>../ooo.engines.newdes</module>
+    	<module>../ooo.runtime.newdes.launcher.event</module>
 	</modules>
 
 </project>
