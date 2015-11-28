@@ -14,16 +14,14 @@
 <!--  teams of INRIA and I3S, UMR CNRS 7172 (MASCOTTE, COATI, OASIS and -->
 <!--  SCALE).                                                           -->
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--> 
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 		 
 	<modelVersion>4.0.0</modelVersion>
 	
 
 	<groupId>org.osadev.osa</groupId>
 	<artifactId>osa-root</artifactId>
-	<version>0.8.1-SNAPSHOT</version>
+	<version>0.8.1</version>
 	<name>OSA root</name>
 
 	<packaging>pom</packaging>
@@ -47,7 +45,7 @@
 	<!-- * Changed web url to osadev.org            -->
 	<!-- * Changed group id and package prefix to org.osadev.osa (ooo) -->
 	
-	<url>http://www.osadev.org/</url>
+	<url>http://www.osadev.org/${version.base}/osa-root/</url>
 	
 	<organization>
 		<name>Université Nice Sophia Antipolis</name>
@@ -89,12 +87,12 @@
 			root. -->
 		<!-- The web-site root is handled as a separate dependency with id f.i.o.wwwroot. -->
 		<website.id>osawebsite</website.id>
-		<website.url.up>scp://osa.inria.fr/var/osa_website/0.8/</website.url.up>
+		<website.url.up>scp://osa.inria.fr/var/osa_website/0.8/osa-root/</website.url.up>
 		<website.rooturl>http://www.osadev.org/0.8/</website.rooturl>
 		
 		<version.base>0.8</version.base>
 		
-		<site.stage.dir>/tmp/osaweb/${version.base}/</site.stage.dir>
+		<site.stage.dir>/tmp/osaweb/${version.base}/osa-root/</site.stage.dir>
 		
 		<!-- Get rid of warnings about encoding -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -112,7 +110,8 @@
 		<url>https://github.com/${scm.url}</url>
 		<connection>${scm.reg.url}</connection>
 		<developerConnection>${scm.dev.url}</developerConnection>
-  	</scm>
+  	  <tag>osa-release-bundle-0.8.1</tag>
+  </scm>
   	
   	<licenses>
 		<license>
@@ -236,6 +235,7 @@
 					<version>0.12</version>
 					<configuration>
 						<message>Creating site for ${project.version}</message>
+
 					</configuration>
 					<executions>
 						<execution>
@@ -271,6 +271,7 @@
 				<artifactId>maven-site-plugin</artifactId>
 				<configuration>
 					<stagingDirectory>${site.stage.dir}</stagingDirectory>
+					<!--  <relativizeDecorationLinks>false</relativizeDecorationLinks> -->
 					<locales>en</locales>
 					<chmod>true</chmod>
 					<inputEncoding>UTF-8</inputEncoding>
