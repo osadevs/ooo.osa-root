@@ -481,13 +481,11 @@
 	<modules>
 		<module>../ooo.maven-config/</module>
 		<module>../ooo.simapis</module>
-		<module>../ooo.simapis.newdes</module>
 		<module>../ooo.engines</module>	
-    	<module>../ooo.simapis.newdes.osalet</module>
     	<module>../ooo.runtime.newdes</module>
-    	<module>../ooo.runtime.newdes.logger</module>
-    	<module>../ooo.engines.newdes</module>
-    	<module>../ooo.runtime.newdes.launcher.event</module>
+    	
+    	<module>../ooo.model.newdes</module>
+    	
 	</modules>
 
 </project>
