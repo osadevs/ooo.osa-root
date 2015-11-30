@@ -483,9 +483,8 @@
 		<module>../ooo.simapis</module>
 		<module>../ooo.engines</module>	
     	<module>../ooo.runtime.newdes</module>
-    	
     	<module>../ooo.model.newdes</module>
-    	
+    	<module>../ooo.experiments.newdes</module>
 	</modules>
 
 </project>
