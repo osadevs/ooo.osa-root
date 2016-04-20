@@ -1,5 +1,9 @@
 # OSA Maven Root module
 
+## Getting started
+
+See the minimal [Event-based helloworld demo](https://github.com/osadevs/ooo.experiments.newdes.helloworld-event) or the slightly more elaborate [Process-oriented demo](https://github.com/osadevs/ooo.experiments.newdes.helloworld-process)...
+
 ## What's OSA?
 
 OSA stands for Open Simulation Architecture.
