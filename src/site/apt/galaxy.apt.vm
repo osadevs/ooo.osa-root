@@ -42,11 +42,11 @@ OSA Projects Galaxy
 |{{{./maven-config/osa-simapis/index.html}simapis}}| <<<o.o.o:>>>   |<<<o.o.o.simapis:>>>  | Common ancestor for all APIs.  |  <<< <GH>/osadevs/ooo.simapis.git>>> |  
 |                                      | <<<maven-config>>> |  <<<osa-simapis>>> |                                |  <<<org.osadev.osa.simapis>>>        |
 *-----------*-------------------+-------------------+--------------------------------+----------+
-|{{{./osa-simapis/osa-simapis-basic/index.html}<<<basic API>>>}}|<<<f.i.o.simapis:>>>  | <<<f.i.o.simapis:>>>       | OSA Reference API. Supports event-driven  |  <<< <svnRoot>/packages/apis/>>>                     |
-|                                                               | <<<osa-simapis>>>     | <<<osa-simapis-basic>>>   | and process-oriented modeling.            |  <<<fr.inria.osa.simapis.basic>>>                    |  
+|{{{./maven-config/osa-simapis/osa-simapis-newdes/index.html}<<<New Design API>>>}}|<<<o.o.o:>>>  | <<<o.o.o.simapis:>>>       | OSA Reference API. Supports event-driven  |  <<< <GH>/osadevs/ooo.simapis.newdes.git>>>                     |
+|                                                               | <<<osa-simapis>>>     | <<<osa-simapis-newdes>>>   | and process-oriented modeling.            |  <<<org.osadev.osa.simapis.newdes>>>                    |  
 *-----------*-------------------+-------------------+--------------------------------+----------+
-|{{{./osa-simapis/osa-simapis-basic/osa-simapis-osalet}<<<basic osalet>>>}}| <<<f.i.o.simapis:>>>  |<<<f.i.o.o-sa.simapis:>>> | Sponlet processor for OSA (adds |   <<< <svnRoot>/packages/apis/>>>        |
-|                                                                          | <<<osa-simapis>>>     |<<<osa--basic-osalet>>>   | osa API artifacts to models)    |   <<<fr.inria.osa.simapis.osalet>>>       |
+|{{{./maven-config/osa-simapis/osa-simapis-newdes-osalet/index.html}<<<OSA Fractal Annotations>>>}}| <<<o.o.o:>>>  |<<<o.o.o.simapis:>>> | Sponlet processor for OSA (adds |   <<< <GH>/osadevs/ooo.simapis.newdes.osalet.git>>>        |
+|                                                                          | <<<osa-simapis>>>     |<<<osa-simapis-newdes-osalet>>>   | osa API artifacts to models)    |   <<<org.osadev.osa.simapis.newdes.osalet>>>       |
 *-----------*-------------------+-------------------+--------------------------------+----------+
 |<<<devsAPI>>>|                    |     |   To be continued  |          |
 *-----------*-------------------+-------------------+--------------------------------+----------+
