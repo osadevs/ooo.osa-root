@@ -36,16 +36,16 @@ OSA Projects Galaxy
 |{{{./index.html}OSA Root}} |  None             | <<<o.o.o:>>>         | Root project. Almost empty,                                              |  <<< <GH>/osadevs/ooo.osa-root.git>>>  |  
 |               |                   |   <<<osa-root>>>     | some common defs. Main location of the common site sources (Doxia/APT).  |         |
 *-----------*-------------------+-------------------+--------------------------------+----------+
-|{{{./maven-config/index.html}Maven Config}} |  <<<o.o.o:>>>             | <<<o.o.o:>>>         | Configuration project, to be used as effective root by                  |  <<< <GH>/osadevs/ooo.maven-config.git>>>  |  
+|{{{./maven-config/index.html}Maven Config}} |  <<<o.o.o:>>>             | <<<o.o.o:>>>         | Configuration project, to be used as effective root by                  |  <<< <GH>/ooo.maven-config.git>>>  |  
 |               |     <<<osa-root>>>         |   <<<maven-config>>>     | other modules. Contains dependencies specifications.  |          |
 *-----------*-------------------+-------------------+--------------------------------+----------+
 |{{{./maven-config/osa-simapis/index.html}simapis}}| <<<o.o.o:>>>   |<<<o.o.o.simapis:>>>  | Common ancestor for all APIs.  |  <<< <GH>/osadevs/ooo.simapis.git>>> |  
 |                                      | <<<maven-config>>> |  <<<osa-simapis>>> |                                |  <<<org.osadev.osa.simapis>>>        |
 *-----------*-------------------+-------------------+--------------------------------+----------+
-|{{{./maven-config/osa-simapis/osa-simapis-newdes/index.html}<<<New Design API>>>}}|<<<o.o.o:>>>  | <<<o.o.o.simapis:>>>       | OSA Reference API. Supports event-driven  |  <<< <GH>/osadevs/ooo.simapis.newdes.git>>>                     |
+|{{{./maven-config/osa-simapis/osa-simapis-newdes/index.html}<<<New Design API>>>}}|<<<o.o.o:>>>  | <<<o.o.o.simapis:>>>       | OSA Reference API. Supports event-driven  |  <<< <GH>/ooo.simapis.newdes.git>>>                     |
 |                                                               | <<<osa-simapis>>>     | <<<osa-simapis-newdes>>>   | and process-oriented modeling.            |  <<<org.osadev.osa.simapis.newdes>>>                    |  
 *-----------*-------------------+-------------------+--------------------------------+----------+
-|{{{./maven-config/osa-simapis/osa-simapis-newdes-osalet/index.html}<<<OSA Fractal Annotations>>>}}| <<<o.o.o:>>>  |<<<o.o.o.simapis:>>> | Sponlet processor for OSA (adds |   <<< <GH>/osadevs/ooo.simapis.newdes.osalet.git>>>        |
+|{{{./maven-config/osa-simapis/osa-simapis-newdes-osalet/index.html}<<<OSA Fractal Annotations>>>}}| <<<o.o.o:>>>  |<<<o.o.o.simapis:>>> | Sponlet processor for OSA (adds |   <<< <GH>/ooo.simapis.newdes.osalet.git>>>        |
 |                                                                          | <<<osa-simapis>>>     |<<<osa-simapis-newdes-osalet>>>   | osa API artifacts to models)    |   <<<org.osadev.osa.simapis.newdes.osalet>>>       |
 *-----------*-------------------+-------------------+--------------------------------+----------+
 |<<<devsAPI>>>|                    |     |   To be continued  |          |
@@ -80,4 +80,5 @@ OSA Projects Galaxy
 |                    |   <<<osa-expe-basic>>>            |  <<<basic-helloworld-simple>>>      | to run the helloworld example         |  <<<fr.inria.osa.experiences.helloworld.simple>>>        |
 *-----------*-------------------+-------------------+--------------------------------+----------+
 
-   (*) <<< <svnRoot>=${svnRootUrl} >>>
+   (*) <<< <GH>={{{https://github.com/osadevs/}}} >>>
+   
